@@ -26,6 +26,8 @@ makeAceObjectPromise("100341").then(function(aceObject) {
     console.log("ace sid: " + _AceTM.sid);
     console.log("ace object 소개: " + _AceTM.whoAmI());
     console.log("_AceTM.getCID(): " + _AceTM.getCID());
+    console.log("_AceTM.whatIsWebview(): " + _AceTM.whatIsWebview());
+    document.body.innerHTML = _AceTM.whatIsWebview();
   })
   .catch(function(e) {
     console.log("in catch: " + e);
