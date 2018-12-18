@@ -34,6 +34,10 @@ class AceCore {
   getCID() {
     return "에혀";
   }
+
+  whatIsWebview() {
+      return aceUtils.whatIsWebview();
+  }
 }
 
 export default {
