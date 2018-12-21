@@ -1,21 +1,35 @@
 import * as uaParserJS from 'ua-parser-js';
 
-function spliceString(url, startIndex, replaceStringlength, willReplaceString) {
-  return !url || startIndex < 0 || replaceStringlength < 0 ? url : url.substr(0, startIndex) + willReplaceString + url.substr(replaceStringlength);
+function spliceString(source, startIndex, endIndex, swapStr) {
+  if (!source || startIndex < 0 || endIndex < 0) {
+    return source;
+  }
+  return source.substr(0, startIndex) + swapStr + source.substr(endIndex);
 }
 
-function spliceRegex(url, regexStart, regexEnd, endStringlength, willReplaceString) {
-  var startIndex = url.search(regexStart);
-  var endIndex = url.search(regexEnd);
-  return regexStart.test(url) && regexEnd.test(url) ? spliceString(url, startIndex, endIndex + endStringlength, willReplaceString) : url;
+function spliceRegex(source, regStartIndex, regEndIndex, endStringLength, swapStr) {
+  const startIndex = source.search(regStartIndex);
+  const endIndex = source.search(regEndIndex);
+
+  if (regStartIndex.test(source) && regEndIndex.test(source)) {
+    return spliceString(source, startIndex, endIndex + endStringLength, swapStr);
+  } else {
+    return source;
+  }
 }
 
-function removeiOSLibraryDirectoryPath(url) {
-  return spliceRegex(url, /\/var\/mobile\/Containers\/Data\/Application/, /\/Library\/NoCloud\//, "/Library/NoCloud".length, "");
+function removeiOSLibraryDirectoryPath(source) {
+  const regStartIndex = /\/var\/mobile\/Containers\/Data\/Application/;
+  const endStr = "/Library/NoCloud";
+  const regEndIndex = /\/Library\/NoCloud\//;
+  return spliceRegex(source, regStartIndex, regEndIndex, endStr.length, "");
 }
 
-function removeAOSFilesDirectoryPath(url) {
-  return spliceRegex(url, /\/data\/user\/0\//, /\/files\//, "/files".length, "");
+function removeAOSFilesDirectoryPath(source) {
+  const regStartIndex = /\/data\/user\/0\//;
+  const endStr = "/files";
+  const regEndIndex = /\/files\//;
+  return spliceRegex(source, regStartIndex, regEndIndex, endStr.length, "");
 }
 
 function parserUserAgentUseUaParserJS() {
