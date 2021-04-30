@@ -10,7 +10,6 @@ module.exports = merge(common, {
     rules: [],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
     plugins: [
       new TsconfigPathsPlugin({
         configFile: path.join(__dirname, "./tsconfig.json"),
