@@ -1,11 +1,10 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  devtool: "source-map",
-  mode: "production",
   entry: {
     main: "./src/Slimer.ts",
   },
@@ -13,7 +12,17 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "slimer-[name].js",
   },
-  plugins: [new HtmlWebpackPlugin(), new CleanWebpackPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./demo/index.html",
+      templateParameters: {
+        env: process.env.NODE_ENV === "development" ? "(개발용)" : "",
+      },
+    }),
+    new CleanWebpackPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin(),
+  ],
   module: {
     rules: [
       {
@@ -37,15 +46,5 @@ module.exports = {
         ],
       },
     ],
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-    plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
-  },
-  optimization: {
-    splitChunks: {
-      chunks: "all",
-      name: "vendors",
-    },
   },
 };
