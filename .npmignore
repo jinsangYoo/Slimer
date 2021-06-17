@@ -1,0 +1,14 @@
+.vscode/
+config/
+dist/*.html
+demo/
+tsconfig.json
+tsconfig.dev.json
+webpack.common.js
+webpack.dev.js
+webpack.prod.js
+.babelrc
+.eslintrc.json
+.prettierrc.js
+stylelint.config.js
+tuidoc.config.json

@@ -1,54 +1,51 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const webpack = require('webpack')
+const pkg = require('./package.json')
+const StyleLintPlugin = require('stylelint-webpack-plugin')
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = {
   entry: {
-    main: "./src/Slimer.ts",
+    main: './src/index.ts',
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "slimer-[name].js",
+    publicPath: '/',
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index.js',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./demo/index.html",
+      template: './demo/index.html',
       templateParameters: {
-        env: process.env.NODE_ENV === "development" ? "(개발용)" : "",
+        env: isProduction ? '' : '(개발용)',
       },
     }),
     new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new MiniCssExtractPlugin(),
+    new StyleLintPlugin(),
   ],
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: "css-loader",
+        use: 'css-loader',
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf|)$/,
-        use: ["file-loader"],
+        use: ['file-loader'],
       },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: "ts-loader",
-            options: {
-              transpileOnly: true,
-            },
-          },
-        ],
+        use: ['ts-loader', 'eslint-loader'],
       },
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: ['.tsx', '.ts', '.js'],
     plugins: [],
   },
-};
+}

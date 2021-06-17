@@ -1,20 +1,28 @@
-type ParamType = "none" | "event" | "buy";
+type ParamType = 'none' | 'event' | 'buy'
 
 type NotExposedCurrency = {
-  init: (type: ParamType, value: string) => ACParams;
-  DEFAULT: ParamType;
-};
+  init: (type: ParamType, value: string) => ACParams
+  TYPE: {
+    DEFAULT: ParamType
+    EVENT: ParamType
+    BUY: ParamType
+  }
+}
 
 type ACParams = {
-  type: ParamType;
-  name: string;
-};
+  type: ParamType
+  name: string
+}
 
-let ACParams: NotExposedCurrency = {
-  DEFAULT: "none",
-  init(type = ACParams.DEFAULT, name: string): ACParams {
-    return { type, name };
+const ACParams: NotExposedCurrency = {
+  TYPE: {
+    DEFAULT: 'none',
+    EVENT: 'event',
+    BUY: 'buy',
   },
-};
+  init(type = ACParams.TYPE.DEFAULT, name: string): ACParams {
+    return { type, name }
+  },
+}
 
-export { ACParams };
+export default ACParams
